@@ -1,0 +1,13 @@
+venv/
+__pycache__/
+*.pyc
+
+snapshots/
+*.jpg
+*.png
+
+*.mp4
+
+Linux_Monitoring_Latest/
+
+.env

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>RPI Login</title>
+
+    <meta charset="UTF-8">
+
+    <style>
+
+        * {
+
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            background: linear-gradient(135deg, #020617, #0f172a);
+            font-family: Arial, sans-serif;
+            position: relative;
+        }
+
+        /* ANIMATED BACKGROUND */
+
+        body::before {
+
+            content: "";
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background:
+                radial-gradient(circle, rgba(56,189,248,0.15) 10%, transparent 10%),
+                radial-gradient(circle, rgba(16,185,129,0.15) 10%, transparent 10%);
+            background-size: 120px 120px;
+            animation: moveBg 20s linear infinite;
+        }
+
+        @keyframes moveBg {
+
+            from {
+                transform: translate(0,0);
+            }
+
+            to {
+                transform: translate(-120px,-120px);
+            }
+        }
+
+        /* LOGIN CARD */
+
+        .login-box {
+
+            position: relative;
+            width: 360px;
+            padding: 40px;
+            border-radius: 25px;
+
+            background: rgba(30,41,59,0.75);
+
+            backdrop-filter: blur(15px);
+
+            box-shadow:
+                0 0 25px rgba(0,0,0,0.5),
+                0 0 20px rgba(56,189,248,0.2);
+
+            text-align: center;
+
+            z-index: 10;
+
+            animation: glow 3s infinite alternate;
+        }
+
+        @keyframes glow {
+
+            from {
+
+                box-shadow:
+                    0 0 20px rgba(56,189,248,0.2);
+            }
+
+            to {
+
+                box-shadow:
+                    0 0 35px rgba(56,189,248,0.5);
+            }
+        }
+
+        /* RPI IMAGE */
+
+        .logo {
+
+            width: 90px;
+            margin-bottom: 15px;
+
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        h1 {
+
+            color: #38bdf8;
+            margin-bottom: 30px;
+            font-size: 34px;
+        }
+
+        input {
+
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 20px;
+
+            border: none;
+            border-radius: 12px;
+
+            background: rgba(255,255,255,0.1);
+
+            color: white;
+
+            font-size: 16px;
+
+            outline: none;
+
+            transition: 0.3s;
+        }
+
+        input:focus {
+
+            border: 1px solid #38bdf8;
+
+            box-shadow: 0 0 10px #38bdf8;
+        }
+
+        input::placeholder {
+
+            color: #cbd5e1;
+        }
+
+        button {
+
+            width: 100%;
+            padding: 14px;
+
+            border: none;
+            border-radius: 12px;
+
+            background: linear-gradient(90deg,#38bdf8,#0ea5e9);
+
+            color: black;
+
+            font-weight: bold;
+
+            font-size: 16px;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+        }
+
+        button:hover {
+
+            transform: scale(1.03);
+
+            box-shadow: 0 0 20px #38bdf8;
+        }
+
+        .footer {
+
+            margin-top: 20px;
+
+            color: #94a3b8;
+
+            font-size: 13px;
+        }
+
+        .error {
+
+color: #ff4d4d;
+
+margin-top: 15px;
+
+font-size: 14px;
+
+font-weight: bold;
+
+animation: shake 0.3s ease;
+}
+
+@keyframes shake {
+
+0% { transform: translateX(0); }
+
+25% { transform: translateX(-5px); }
+
+50% { transform: translateX(5px); }
+
+75% { transform: translateX(-5px); }
+
+100% { transform: translateX(0); }
+}
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="login-box">
+
+        <img
+        class="logo"
+        src="https://upload.wikimedia.org/wikipedia/en/c/cb/Raspberry_Pi_Logo.svg">
+
+        <h1>RPI LOGIN</h1>
+
+        <form method="POST">
+
+            <input
+            type="text"
+            name="username"
+            placeholder="Username"
+            required>
+
+            <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            required>
+
+            <button type="submit">
+
+                LOGIN
+
+            </button>
+
+            {% if error %}
+
+<div class="error">
+
+    {{ error }}
+
+</div>
+
+{% endif %}
+
+        </form>
+
+        <div class="footer">
+
+            Embedded Linux Monitoring System
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

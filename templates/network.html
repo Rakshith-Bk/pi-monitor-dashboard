@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Network Info</title>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+
+        * {
+
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial;
+        }
+
+        body {
+
+            background: #020617;
+            color: white;
+            display: flex;
+        }
+
+        .sidebar {
+
+            width: 240px;
+            height: 100vh;
+
+            background: #081028;
+
+            padding: 20px;
+        }
+
+        .sidebar h2 {
+
+            color: #38bdf8;
+            margin-bottom: 30px;
+        }
+
+        .sidebar ul {
+
+            list-style: none;
+        }
+
+        .sidebar li {
+
+            padding: 15px;
+            margin-bottom: 15px;
+
+            background: #1e293b;
+
+            border-radius: 12px;
+        }
+
+        .sidebar a {
+
+            color: white;
+            text-decoration: none;
+        }
+
+        .main {
+
+            flex: 1;
+            padding: 40px;
+        }
+
+        h1 {
+
+            color: #38bdf8;
+            margin-bottom: 40px;
+        }
+
+        .grid {
+
+            display: grid;
+
+            grid-template-columns:
+            repeat(auto-fit,minmax(250px,1fr));
+
+            gap: 25px;
+        }
+
+        .card {
+
+            background: #1e293b;
+
+            padding: 25px;
+
+            border-radius: 20px;
+
+            box-shadow:
+            0 0 15px rgba(56,189,248,0.15);
+        }
+
+        .card h3 {
+
+            margin-bottom: 20px;
+
+            color: #cbd5e1;
+        }
+
+        .value {
+
+            font-size: 28px;
+
+            color: #22c55e;
+
+            word-wrap: break-word;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+
+    <div class="sidebar">
+
+        <h2>RPI DASH</h2>
+
+        <ul>
+
+            <li>
+                <a href="/dashboard">
+                <i class="fa-solid fa-chart-line"></i>
+                Dashboard
+                </a>
+            </li>
+
+            <li>
+                <a href="/memory">
+                <i class="fa-solid fa-memory"></i>
+                Memory Stats
+                </a>
+            </li>
+
+            <li>
+                <a href="/network">
+                <i class="fa-solid fa-network-wired"></i>
+                Network Info
+                </a>
+            </li>
+
+            <li>
+                <a href="/logs">
+                <i class="fa-solid fa-file-lines"></i>
+                System Logs
+                </a>
+            </li>
+
+            <li>
+                <a href="/settings">
+                <i class="fa-solid fa-gear"></i>
+                Settings
+                </a>
+            </li>
+
+            <li>
+
+                <a href="/camera" class="nav-link">
+            
+                    <i class="fa-solid fa-video"></i>
+            
+                    Camera Stream
+            
+                </a>
+            
+            </li>
+
+        </ul>
+
+    </div>
+
+    <!-- MAIN -->
+
+    <div class="main">
+
+        <h1>Network Information</h1>
+
+        <div class="grid">
+
+            <div class="card">
+
+                <h3>Hostname</h3>
+
+                <div class="value">
+
+                    {{ hostname }}
+
+                </div>
+
+            </div>
+
+            <div class="card">
+
+                <h3>IP Address</h3>
+
+                <div class="value">
+
+                    {{ ip }}
+
+                </div>
+
+            </div>
+
+            <div class="card">
+
+                <h3>MAC Address</h3>
+
+                <div class="value">
+
+                    {{ mac }}
+
+                </div>
+
+            </div>
+
+            <div class="card">
+
+                <h3>Download Speed</h3>
+            
+                <div class="value">
+            
+                    <span id="download_speed">
+            
+                        0
+            
+                    </span>
+            
+                    KB/s
+            
+                </div>
+            
+            </div>
+            
+            <div class="card">
+            
+                <h3>Upload Speed</h3>
+            
+                <div class="value">
+            
+                    <span id="upload_speed">
+            
+                        0
+            
+                    </span>
+            
+                    KB/s
+            
+                </div>
+            
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+
+        async function updateNetwork() {
+        
+            const response = await fetch('/stats');
+        
+            const data = await response.json();
+        
+            document.getElementById('download_speed').innerText =
+                data.download;
+        
+            document.getElementById('upload_speed').innerText =
+                data.upload;
+        }
+        
+        setInterval(updateNetwork, 1000);
+        
+        </script>
+
+<script>
+
+    if (performance.navigation.type === 1) {
+    
+        window.location.href = "/logout";
+    
+    }
+    
+    </script>
+
+</body>
+
+</html>

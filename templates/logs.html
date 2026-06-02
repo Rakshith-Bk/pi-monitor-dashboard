@@ -1,0 +1,282 @@
+s<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>System Logs</title>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+
+        * {
+
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial;
+        }
+
+        body {
+
+            background: #020617;
+            color: white;
+            display: flex;
+        }
+
+        .sidebar {
+
+            width: 240px;
+            height: 100vh;
+
+            background: #081028;
+
+            padding: 20px;
+        }
+
+        .sidebar h2 {
+
+            color: #38bdf8;
+            margin-bottom: 30px;
+        }
+
+        .sidebar ul {
+
+            list-style: none;
+        }
+
+        .sidebar li {
+
+            padding: 15px;
+            margin-bottom: 15px;
+
+            background: #1e293b;
+
+            border-radius: 12px;
+        }
+
+        .sidebar a {
+
+            color: white;
+            text-decoration: none;
+        }
+
+        .main {
+
+            flex: 1;
+            padding: 40px;
+        }
+
+        h1 {
+
+            color: #38bdf8;
+            margin-bottom: 30px;
+        }
+
+        .logs-container {
+
+            background: black;
+
+            color: #22c55e;
+
+            padding: 20px;
+
+            border-radius: 20px;
+
+            height: 80vh;
+
+            overflow-y: scroll;
+
+            font-family: monospace;
+
+            box-shadow:
+            0 0 20px rgba(56,189,248,0.15);
+        }
+
+        .log-line {
+
+            margin-bottom: 8px;
+
+            white-space: pre-wrap;
+        }
+
+        .warning {
+
+            color: yellow;
+        }
+
+        .error {
+
+            color: red;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+
+    <div class="sidebar">
+
+        <h2>RPI DASH</h2>
+
+        <ul>
+
+            <li>
+                <a href="/dashboard">
+                <i class="fa-solid fa-chart-line"></i>
+                Dashboard
+                </a>
+            </li>
+
+            <li>
+                <a href="/memory">
+                <i class="fa-solid fa-memory"></i>
+                Memory Stats
+                </a>
+            </li>
+
+            <li>
+                <a href="/network">
+                <i class="fa-solid fa-network-wired"></i>
+                Network Info
+                </a>
+            </li>
+
+            <li>
+                <a href="/logs">
+                <i class="fa-solid fa-file-lines"></i>
+                System Logs
+                </a>
+            </li>
+
+            <li>
+                <a href="/settings">
+                <i class="fa-solid fa-gear"></i>
+                Settings
+                </a>
+            </li>
+
+            <li>
+
+                <a href="/camera" class="nav-link">
+            
+                    <i class="fa-solid fa-video"></i>
+            
+                    Camera Stream
+            
+                </a>
+            
+            </li>
+
+        </ul>
+
+    </div>
+
+    <!-- MAIN -->
+
+    <div class="main">
+
+        <h1>System Logs</h1>
+
+        <div class="logs-container" id="logs_container">
+
+            {% for line in logs %}
+
+                {% if 'error' in line.lower() %}
+
+                    <div class="log-line error">
+
+                        {{ line }}
+
+                    </div>
+
+                {% elif 'warning' in line.lower() %}
+
+                    <div class="log-line warning">
+
+                        {{ line }}
+
+                    </div>
+
+                {% else %}
+
+                    <div class="log-line">
+
+                        {{ line }}
+
+                    </div>
+
+                {% endif %}
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+    <script>
+
+        if (performance.navigation.type === 1) {
+        
+            window.location.href = "/logout";
+        
+        }
+        
+        </script>
+
+<script>
+
+    async function updateLogs() {
+    
+        const response = await fetch('/logs_data');
+    
+        const data = await response.json();
+    
+        let logsHTML = '';
+    
+        data.logs.forEach(line => {
+    
+            if (line.toLowerCase().includes('error')) {
+    
+                logsHTML +=
+                `<div class="log-line error">${line}</div>`;
+    
+            }
+    
+            else if (line.toLowerCase().includes('warning')) {
+    
+                logsHTML +=
+                `<div class="log-line warning">${line}</div>`;
+            }
+    
+            else {
+    
+                logsHTML +=
+                `<div class="log-line">${line}</div>`;
+            }
+    
+        });
+    
+        document.getElementById(
+            'logs_container'
+        ).innerHTML = logsHTML;
+    }
+    
+    setInterval(updateLogs, 3000);
+    
+    updateLogs();
+    
+    </script>
+
+</body>
+
+</html>

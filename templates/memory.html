@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Memory Stats</title>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+
+        * {
+
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial;
+        }
+
+        body {
+
+            background: #020617;
+            color: white;
+            display: flex;
+        }
+
+        .sidebar {
+
+            width: 240px;
+            height: 100vh;
+
+            background: #081028;
+
+            padding: 20px;
+        }
+
+        .sidebar h2 {
+
+            color: #38bdf8;
+            margin-bottom: 30px;
+        }
+
+        .sidebar ul {
+
+            list-style: none;
+        }
+
+        .sidebar li {
+
+            padding: 15px;
+            margin-bottom: 15px;
+
+            background: #1e293b;
+
+            border-radius: 12px;
+
+            cursor: pointer;
+        }
+
+        .sidebar a {
+
+            color: white;
+            text-decoration: none;
+        }
+
+        .main {
+
+            flex: 1;
+            padding: 40px;
+        }
+
+        h1 {
+
+            color: #38bdf8;
+            margin-bottom: 40px;
+        }
+
+        .grid {
+
+            display: grid;
+
+            grid-template-columns:
+            repeat(auto-fit,minmax(250px,1fr));
+
+            gap: 25px;
+        }
+
+        .card {
+
+            background: #1e293b;
+
+            padding: 25px;
+
+            border-radius: 20px;
+
+            box-shadow:
+            0 0 15px rgba(56,189,248,0.15);
+        }
+
+        .card h3 {
+
+            margin-bottom: 20px;
+
+            color: #cbd5e1;
+        }
+
+        .value {
+
+            font-size: 42px;
+
+            color: #22c55e;
+
+            font-weight: bold;
+        }
+
+        .unit {
+
+            font-size: 20px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+
+    <div class="sidebar">
+
+        <h2>RPI DASH</h2>
+
+        <ul>
+
+            <li>
+                <a href="/dashboard">
+                <i class="fa-solid fa-chart-line"></i>
+                Dashboard
+                </a>
+            </li>
+
+            <li>
+                <a href="/memory">
+                <i class="fa-solid fa-memory"></i>
+                Memory Stats
+                </a>
+            </li>
+
+            <li>
+                <a href="/network">
+                <i class="fa-solid fa-network-wired"></i>
+                Network Info
+                </a>
+            </li>
+
+            <li>
+                <a href="/logs">
+                <i class="fa-solid fa-file-lines"></i>
+                System Logs
+                </a>
+            </li>
+
+            <li>
+                <a href="/settings">
+                <i class="fa-solid fa-gear"></i>
+                Settings
+                </a>
+            </li>
+
+            <li>
+
+                <a href="/camera" class="nav-link">
+            
+                    <i class="fa-solid fa-video"></i>
+            
+                    Camera Stream
+            
+                </a>
+            
+            </li>
+
+        </ul>
+
+    </div>
+
+    <!-- MAIN -->
+
+    <div class="main">
+
+        <h1>Memory Statistics</h1>
+
+        <div class="grid">
+
+            <div class="card">
+
+                <h3>Total RAM</h3>
+
+                <div class="value">
+
+                    <span id="total_ram">
+
+                        {{ total_ram }}
+                        
+                        </span>
+
+                    <span class="unit">GB</span>
+
+                </div>
+
+            </div>
+
+            <div class="card">
+
+                <h3>Used RAM</h3>
+
+                <div class="value">
+
+                    <span id="used_ram">
+
+                        {{ used_ram }}
+                        
+                        </span>
+
+                    <span class="unit">GB</span>
+
+                </div>
+
+            </div>
+
+            <div class="card">
+
+                <h3>Free RAM</h3>
+
+                <div class="value">
+
+                    <span id="free_ram">
+
+                        {{ free_ram }}
+                        
+                        </span>
+
+                    <span class="unit">GB</span>
+
+                </div>
+
+            </div>
+
+            <div class="card">
+
+                <h3>Available RAM</h3>
+
+                <div class="value">
+
+                    <span id="available_ram">
+
+                        {{ available_ram }}
+                        
+                        </span>
+
+                    <span class="unit">GB</span>
+
+                </div>
+
+            </div>
+
+            <div class="card">
+
+                <h3>RAM Usage</h3>
+
+                <div class="value">
+
+                    <span id="ram_percent">
+
+                        {{ ram_percent }}
+                        
+                        </span>
+
+                    <span class="unit">%</span>
+
+                </div>
+
+            </div>
+
+            <div class="card">
+
+                <h3>Cached Memory</h3>
+
+                <div class="value">
+
+                    <span id="cached_ram">
+
+                        {{ cached_ram }}
+                        
+                        </span>
+
+                    <span class="unit">GB</span>
+
+                </div>
+
+            </div>
+
+            <div class="card">
+
+                <h3>Buffers</h3>
+
+                <div class="value">
+
+                    <span id="buffers_ram">
+
+                        {{ buffers_ram }}
+                        
+                        </span>
+
+                    <span class="unit">GB</span>
+
+                </div>
+
+            </div>
+
+            <div class="card">
+
+                <h3>Swap Used</h3>
+
+                <div class="value">
+
+                    <span id="swap_used ">
+
+                    {{ swap_used }}
+
+                </span>
+
+                    <span class="unit">GB</span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+
+        async function updateMemory() {
+        
+            try {
+        
+                const response = await fetch('/memory_stats');
+        
+                const data = await response.json();
+        
+                document.getElementById('total_ram').innerText =
+                    data.total_ram;
+        
+                document.getElementById('used_ram').innerText =
+                    data.used_ram;
+        
+                document.getElementById('free_ram').innerText =
+                    data.free_ram;
+        
+                document.getElementById('available_ram').innerText =
+                    data.available_ram;
+        
+                document.getElementById('ram_percent').innerText =
+                    data.ram_percent;
+        
+                document.getElementById('cached_ram').innerText =
+                    data.cached_ram;
+        
+                document.getElementById('buffers_ram').innerText =
+                    data.buffers_ram;
+        
+                document.getElementById('swap_used').innerText =
+                    data.swap_used;
+        
+            }
+        
+            catch(error) {
+        
+                console.log(error);
+        
+            }
+        
+        }
+        
+        setInterval(updateMemory, 1000);
+        
+        updateMemory();
+        
+        </script>
+
+<script>
+
+    if (performance.navigation.type === 1) {
+    
+        window.location.href = "/logout";
+    
+    }
+    
+    </script>
+</body>
+
+</html>
