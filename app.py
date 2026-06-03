@@ -33,6 +33,9 @@ old_time = time.time()
 cap = cv2.VideoCapture(
     "rtsp://admin:Datacorp123$@10.1.21.235"
 )
+
+cap.set(cv2.CAP_PROP_BUFFERSIZE, 1)
+
 latest_frame = None
 
 # LOGIN PAGE
@@ -252,13 +255,27 @@ def generate_frames():
                 "rtsp://admin:Datacorp123$@10.1.21.235"
             )
 
+            cap.set(
+                cv2.CAP_PROP_BUFFERSIZE,
+                1
+            )
+
             continue
 
         latest_frame = frame.copy()
 
-        ret, buffer = cv2.imencode('.jpg', frame)
+        frame = cv2.resize(
+            frame,
+            (960, 540)
+        )
+
+        ret, buffer = cv2.imencode(
+            '.jpg',
+            frame
+        )
 
         if not ret:
+
             continue
 
         frame_bytes = buffer.tobytes()
