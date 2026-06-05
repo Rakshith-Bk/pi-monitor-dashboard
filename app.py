@@ -368,7 +368,11 @@ def reboot():
 
     import os
 
-    os.system('sudo reboot')
+    import subprocess
+
+    subprocess.Popen(
+        ['sudo', '/sbin/reboot']
+)
 
     return redirect(url_for('settings'))
 
@@ -379,7 +383,9 @@ def shutdown():
 
     import os
 
-    os.system('sudo shutdown now')
+    subprocess.Popen(
+        ['sudo', '/sbin/shutdown', 'now']
+)
 
     return redirect(url_for('settings'))
 
