@@ -30,9 +30,9 @@ PASSWORD = "pi"
 
 old_data = psutil.net_io_counters()
 old_time = time.time()
-cap = cv2.VideoCapture(
-    "rtsp://admin:Datacorp123$@10.1.21.235"
-)
+RTSP_URL = "rtsp://admin:Datacorp123$@10.1.21.235/cam/realmonitor?channel=1&subtype=1"
+
+cap = cv2.VideoCapture(RTSP_URL)
 
 cap.set(cv2.CAP_PROP_BUFFERSIZE, 1)
 
@@ -251,9 +251,7 @@ def generate_frames():
 
             time.sleep(1)
 
-            cap = cv2.VideoCapture(
-                "rtsp://admin:Datacorp123$@10.1.21.235"
-            )
+            cap = cv2.VideoCapture(RTSP_URL)
 
             cap.set(
                 cv2.CAP_PROP_BUFFERSIZE,
@@ -266,13 +264,19 @@ def generate_frames():
 
         frame = cv2.resize(
             frame,
-            (960, 540)
+            (800, 450)
         )
+
+        encode_param = [
+            int(cv2.IMWRITE_JPEG_QUALITY),
+            70
+]
 
         ret, buffer = cv2.imencode(
             '.jpg',
-            frame
-        )
+            frame,
+            encode_param
+)
 
         if not ret:
 
@@ -308,10 +312,15 @@ def capture():
 
         return "No frame available"
 
+    capture_frame = cv2.resize(
+        latest_frame,
+        (800, 450)
+)
+
     ret, buffer = cv2.imencode(
         '.jpg',
-        latest_frame
-    )
+        capture_frame
+)
 
     img_io = io.BytesIO(
         buffer.tobytes()
@@ -461,5 +470,7 @@ if __name__ == "__main__":
     app.run(
         host='0.0.0.0',
         port=5000,
-        threaded=True
+        threaded=True,
+        debug=False,
+        use_reloader=False
     )
